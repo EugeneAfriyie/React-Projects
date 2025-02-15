@@ -1,9 +1,10 @@
-import React from 'react'
-import c
+import ChatBotStart from './Components/ChatBotStart'
 
 const App = () => {
   return (
-    <div>App</div>
+    <div className='container'>
+    <ChatBotStart />
+    </div>
   )
 }
 
