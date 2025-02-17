@@ -2,10 +2,36 @@ import React from 'react'
 import './ChatBotApp.css'
 
 const ChatBotApp = ({handleGoBack,chats,setChats}) => {
-    const [inputValue,setInputValue] = React.useState('');
+    const [inputValue,setInputValue] = useState('');
     const [messages,setMessages] = React.useState(chats[0]?.messages || []);
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
+    }
+
+    const sendMeassage = (e) => {
+        if(inputValue.trim() === '') return;
+        const newMessage = {
+            type:'prompt',
+            text: inputValue,
+            time: new Date().toLocaleTimeString(),
+        }
+
+        const UpdatedMesages = [...messages,newMessage];
+        setMessages(UpdatedMesages);
+        setInputValue('');
+
+        const UpdatedChat = chats.map((chat,index ) => {
+            if(index === 0){
+                return {
+                    ...chat,
+                    messages: UpdatedMesages
+                }
+            }
+            return chat
+           
+        })
+
+        setChats(UpdatedChat);
     }
 
   return (
@@ -15,18 +41,14 @@ const ChatBotApp = ({handleGoBack,chats,setChats}) => {
                 <h2>Chat List</h2>
                 <i className="bx bx-edit-alt new-chat"></i>
             </div>
-            <div className="chat-list-item active">
-                <h4>Chat 15/02/2025 10:09 PM</h4>
-                <i className="bx bx-x-circle"></i>
-            </div>
-            <div className="chat-list-item">
-                <h4>Chat 15/02/2025 10:09 PM</h4>
-                <i className="bx bx-x-circle"></i>
-            </div>
-            <div className="chat-list-item">
-                <h4>Chat 15/02/2025 10:09 PM</h4>
-                <i className="bx bx-x-circle"></i>
-            </div>
+            {chats.map((chat,index) =>{
+
+                 <div key={index} className={`chat-list-item ${index === 0 ? 'active' : ''}`}>
+                 <h4>{chat.id}</h4>
+                 <i className="bx bx-x-circle"></i>
+             </div>
+            })}
+           
         </div>
         <div className="chat-window">
             <div className="chat-title">
