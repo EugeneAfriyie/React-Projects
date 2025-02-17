@@ -1,7 +1,13 @@
 import React from 'react'
 import './ChatBotApp.css'
 
-const ChatBotApp = ({handleGoBack}) => {
+const ChatBotApp = ({handleGoBack,chats,setChats}) => {
+    const [inputValue,setInputValue] = React.useState('');
+    const [messages,setMessages] = React.useState(chats[0]?.messages || []);
+    const handleInputChange = (e) => {
+        setInputValue(e.target.value);
+    }
+
   return (
     <div className='chat-app'>
         <div className="chat-list">
