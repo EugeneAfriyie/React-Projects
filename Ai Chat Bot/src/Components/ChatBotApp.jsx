@@ -1,15 +1,18 @@
 import React from 'react'
+import { useState } from 'react';
 import './ChatBotApp.css'
 
-const ChatBotApp = ({handleGoBack,chats,setChats}) => {
+const ChatBotApp = ({handleGoBack,chats,setChats,handleDeleteChat}) => {
+
     const [inputValue,setInputValue] = useState('');
-    const [messages,setMessages] = React.useState(chats[0]?.messages || []);
+    const [messages,setMessages] = useState(chats[0]?.messages || []);
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
     }
 
-    const sendMeassage = (e) => {
-        if(inputValue.trim() === '') return;
+
+    const sendMessage = (e) => {
+    if(inputValue.trim() === '') return;
         const newMessage = {
             type:'prompt',
             text: inputValue,
@@ -27,11 +30,24 @@ const ChatBotApp = ({handleGoBack,chats,setChats}) => {
                     messages: UpdatedMesages
                 }
             }
+            
             return chat
-           
+            
         })
-
+        
         setChats(UpdatedChat);
+    
+    }
+
+    React.useEffect(() => {
+        setMessages(chats[0]?.messages || []);
+    }, [chats]);
+
+
+    const handleKeyDown = (event) =>{
+            if (event.key === "Enter") {
+                sendMessage()
+            }
     }
 
   return (
@@ -41,13 +57,17 @@ const ChatBotApp = ({handleGoBack,chats,setChats}) => {
                 <h2>Chat List</h2>
                 <i className="bx bx-edit-alt new-chat"></i>
             </div>
-            {chats.map((chat,index) =>{
+            {chats.map((chat,index) =>(
 
                  <div key={index} className={`chat-list-item ${index === 0 ? 'active' : ''}`}>
                  <h4>{chat.id}</h4>
-                 <i className="bx bx-x-circle"></i>
+                 <i 
+                    className="bx bx-x-circle"
+                    onClick={() => handleDeleteChat(chat.id)}
+                 
+                 ></i>
              </div>
-            })}
+            ))}
            
         </div>
         <div className="chat-window">
@@ -56,19 +76,35 @@ const ChatBotApp = ({handleGoBack,chats,setChats}) => {
                 <i onClick={handleGoBack} className="bx bx-arrow-back arrow"></i>
             </div>
             <div className="chat">
-                <div className="prompt">
-                    Hi, how are you doing? 
-                    <span>10:23:54 PM</span>
+
+                {
+                    messages.map((message,index) =>(
+                        
+                <div key={index} className={message.type === 'prompt'? 'prompt' : 'response'}>
+                   {message.text} 
+                    <span>{message.time}</span>
                 </div>
+                    ))
+                }
                 <div className="response">
                     Hello! I'm just a computer program, so i don't have feelings,but I'm here and ready to assist you. How Can I Help You Today?
                     <span>10:23:54 PM</span>
                 </div>
-                <div className="typing">Typing....</div>
-                <form className='msg-form'>
+                <div className="typing">Typing...</div>
+                <form className='msg-form' onSubmit={(e) =>{
+                    e.preventDefault()
+                }}>
                     <i className="fa-solid fa-face-smile emoji"></i>
-                    <input type="text" placeholder='Type a message ......' className="msg-input" />
-                    <i className="fa-solid fa-paper-plane"></i>
+                    <input type="text"
+                     value={inputValue}
+                     placeholder='Type a message ......'
+                     onChange = {handleInputChange}
+                     className="msg-input"
+                     onKeyDown={handleKeyDown}
+                     />
+                    <i onClick={()=>{sendMessage();}
+                       
+                    } className="fa-solid fa-paper-plane"></i>
                 </form>
             </div>
         </div>
