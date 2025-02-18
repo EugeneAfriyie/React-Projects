@@ -5,14 +5,14 @@ import ChatBotStart from './Components/ChatBotStart'
 const App = () => {
   const [isChatting,setIsChatting] = useState(false);
   const [chats,setChats] = useState([]);
-  const [activeChat,setActiveChat] = useState[null];
+  const [activeChat,setActiveChat] = useState(null);
 
 
 
   const createNewChat = () =>{
 
     const newChat = {
-      id: `chat ${new Date().toLocaleDateString('en-OB')} ${new Date().toDateString()}`,
+      id: `chat ${new Date().toLocaleDateString('en-OB')} ${new Date().toLocaleTimeString()}`,
       messages:[],
         }
 
@@ -38,6 +38,9 @@ const App = () => {
     const handleDeleteChat = (index) => {
       const filteredChats = chats.filter((chat) => chat.id !== index);
       setChats(filteredChats);
+      console.log(chats)
+      console.log(index)
+      console.log(`chat ${new Date().toLocaleDateString('en-OB')} ${new Date().toDateString()}`)
   };
   
 
