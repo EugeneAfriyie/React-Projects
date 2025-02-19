@@ -9,7 +9,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
     useEffect(() => {
         const activeChatObj = chats.find(chat => chat.id === activeChat);
         setMessages(activeChatObj ? activeChatObj.messages : []);
-        console.log(activeChat);
+        // console.log(activeChat);
     }, [activeChat, chats]);
 
     const handleInputChange = (e) => {
@@ -17,7 +17,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
     };
 
     const sendMessage = () => {
-        if (!inputValue.trim()) return; // Prevent empty messages
+        if (!inputValue.trim()) return;  // Prevent empty messages
 
         const newMessage = {
             type: 'prompt',
@@ -55,7 +55,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
                     <i className="bx bx-edit-alt new-chat" onClick={onNewchat}></i>
                 </div>
                 {chats.map((chat, index) => {
-                    console.log(`chat id - ${chat.id} and activeChat is ${activeChat}`);
+                    // console.log(`chat id - ${chat.id} and activeChat is ${activeChat}`);
                     return (
                         <div
                             key={index}
