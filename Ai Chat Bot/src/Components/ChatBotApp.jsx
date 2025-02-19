@@ -62,7 +62,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
                             className={`chat-list-item ${chat.id === activeChat ? 'active' : ''}`}
                             onClick={() => handleSelectedChat(chat.id)} // ✅ Fix
                         >
-                            <h4>{chat.id}</h4>
+                            <h4>{chat.displayId}</h4>
                             <i className="bx bx-x-circle"  onClick={(e) =>{ handleDeleteChat(chat.id) ;e.stopPropagation(); }}></i>
                         </div>
                     );

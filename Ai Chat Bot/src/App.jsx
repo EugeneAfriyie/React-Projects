@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ChatBotApp from './Components/ChatBotApp'
 import ChatBotStart from './Components/ChatBotStart'
+import {v4 as uuidv4} from 'uuid'
 
 const App = () => {
   const [isChatting,setIsChatting] = useState(false);
@@ -12,7 +13,8 @@ const App = () => {
   const createNewChat = () =>{
 
     const newChat = {
-      id: `chat ${new Date().toLocaleDateString('en-OB')} ${new Date().toLocaleTimeString()}`,
+      id: uuidv4(),
+      displayId: `chat ${new Date().toLocaleDateString('en-OB')} ${new Date().toLocaleTimeString()}`,
       messages:[],
         }
 
@@ -35,12 +37,15 @@ const App = () => {
     //   setChats(filterChat)
     // }
 
-    const handleDeleteChat = (index) => {
-      const filteredChats = chats.filter((chat) => chat.id !== index);
+    const handleDeleteChat = (id) => {
+      const filteredChats = chats.filter((chat) => chat.id !== id);
       setChats(filteredChats);
-      console.log(chats)
-      console.log(index)
-      console.log(`chat ${new Date().toLocaleDateString('en-OB')} ${new Date().toDateString()}`)
+
+      if (id === activeChat) {
+        const newActiveChat = filteredChats.length > 0 ? filteredChats[0].id : null;
+        setActiveChat(newActiveChat);
+      }
+   
   };
   
 
