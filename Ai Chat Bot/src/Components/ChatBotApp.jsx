@@ -18,22 +18,30 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
 
     const sendMessage = () => {
         if (!inputValue.trim()) return;  // Prevent empty messages
-
         const newMessage = {
             type: 'prompt',
             text: inputValue,
             time: new Date().toLocaleTimeString(),
         };
+      
+
+        if (chats.length === 0){
+            onNewchat(newMessage);
+           }
+
+
 
         const updatedMessages = [...messages, newMessage];
         setMessages(updatedMessages);
         setInputValue('');
+        
 
-        const updatedChats = chats.map(chat =>
-            chat.id === activeChat ? { ...chat, messages: updatedMessages } : chat
-        );
 
-        setChats(updatedChats);
+    //    const updatedChats = chats.map(chat =>
+    //     chat.id === activeChat ? { ...chat, messages: updatedMessages } : chat
+    // );
+
+    //     setChats(updatedChats);
     };
 
     const handleKeyDown = (event) => {
@@ -52,7 +60,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
             <div className="chat-list">
                 <div className="chat-list-header">
                     <h2>Chat List</h2>
-                    <i className="bx bx-edit-alt new-chat" onClick={onNewchat}></i>
+                    <i className="bx bx-edit-alt new-chat" onClick={() => onNewchat(null)}></i>
                 </div>
                 {chats.map((chat, index) => {
                     // console.log(`chat id - ${chat.id} and activeChat is ${activeChat}`);
@@ -81,10 +89,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
                             <span>{message.time}</span>
                         </div>
                     ))}
-                    <div className="response">
-                        Hello! I'm just a computer program, so I don't have feelings, but I'm here and ready to assist you. How can I help you today?
-                        <span>10:23:54 PM</span>
-                    </div>
+                
                     <div className="typing">Typing...</div>
                     <form className='msg-form' onSubmit={(e) => e.preventDefault()}>
                         <i className="fa-solid fa-face-smile emoji"></i>

@@ -10,26 +10,31 @@ const App = () => {
 
 
 
-  const createNewChat = () =>{
+  const createNewChat = (initialMessage) =>{
 
     const newChat = {
-      id: uuidv4(),
-      displayId: `chat ${new Date().toLocaleDateString('en-OB')} ${new Date().toLocaleTimeString()}`,
-      messages:[],
-        }
-
+            id: uuidv4(),
+            displayId: `chat ${new Date().toLocaleDateString('en-OB')} ${new Date().toLocaleTimeString()}`,
+            messages: initialMessage ? [initialMessage] : []
+          }
         const updatedChat = [newChat,...chats];
+        console.log(updatedChat);
         setChats(updatedChat);
         setActiveChat(newChat.id)
+        console.log("Received initialMessage:", initialMessage);
+
+
   }
 
-  const handleStartChat = () => {
-    setIsChatting(true);
+    const handleStartChat = () => {
+      setIsChatting(true);
+      // console.log
 
-    if (chats.length === 0){
-      createNewChat();
-   
-    }  }
+        // if (chats.length === 0){
+        //   createNewChat();
+      
+        // }  
+    }
 
     // const handleDeleteChat = (index) =>{
     //   const filterChat= chats.filter((chat) => chat.id !== index)
