@@ -18,10 +18,8 @@ const App = () => {
             messages: initialMessage ? [initialMessage] : []
           }
         const updatedChat = [newChat,...chats];
-        console.log(updatedChat);
         setChats(updatedChat);
         setActiveChat(newChat.id)
-        console.log("Received initialMessage:", initialMessage);
 
 
   }

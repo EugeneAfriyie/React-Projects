@@ -12,37 +12,60 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
         // console.log(activeChat);
     }, [activeChat, chats]);
 
-    const handleInputChange = (e) => {
+    const handleInputChange =  (e) => {
         setInputValue(e.target.value);
     };
 
-    const sendMessage = () => {
-        if (!inputValue.trim()) return;  // Prevent empty messages
+    const sendMessage = async () => {
+        if (!inputValue.trim()) return;
+    
         const newMessage = {
             type: 'prompt',
             text: inputValue,
             time: new Date().toLocaleTimeString(),
         };
-      
 
-        if (chats.length === 0){
-            onNewchat(newMessage);
-           }
-
-
-
-        const updatedMessages = [...messages, newMessage];
-        setMessages(updatedMessages);
+        onNewchat(newMessage)
+    
+        setMessages([...messages, newMessage]);
         setInputValue('');
-        
-
-
-    //    const updatedChats = chats.map(chat =>
-    //     chat.id === activeChat ? { ...chat, messages: updatedMessages } : chat
-    // );
-
-    //     setChats(updatedChats);
+    
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: inputValue }] }]
+                }),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+    
+            if (data.error) {
+                console.error("API Error:", data.error.message);
+                alert(`API Error: ${data.error.message}`);
+                return;
+            }
+    
+            const chatResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+    
+            const newResponse = {
+                type: 'response',
+                text: chatResponse,
+                time: new Date().toLocaleTimeString(),
+            };
+    
+            setMessages((prevMessages) => [...prevMessages, newResponse]);
+        } catch (error) {
+            console.error("Fetch error:", error);
+            alert("Network error. Please check your connection.");
+        }
     };
+    
 
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
@@ -54,6 +77,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
     const handleSelectedChat = (id) => {
         setActiveChat(id);
     };
+
 
     return (
         <div className='chat-app'>
