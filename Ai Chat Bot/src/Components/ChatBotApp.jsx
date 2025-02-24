@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import './ChatBotApp.css'
 
-const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat, setActiveChat, activeChat }) => {
+const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTyping,isTyping, onNewchat, setActiveChat, activeChat }) => {
     const [inputValue, setInputValue] = useState('');
     const [messages, setMessages] = useState(chats[0]?.messages || []);
 
@@ -32,6 +32,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
     
         setMessages([...messages, newMessage]);
         setInputValue('');
+        setIsTyping(true);
     
         try {
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`, {
@@ -61,6 +62,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
                 text: chatResponse,
                 time: new Date().toLocaleTimeString(),
             };
+            isTyping(false);
     
             setMessages((prevMessages) => [...prevMessages, newResponse]);
         } catch (error) {
@@ -117,7 +119,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
                         </div>
                     ))}
                 
-                    <div className="typing">Typing...</div>
+                    <div className="typing">{isTyping ?'Typing...': ''}</div>
                     <form className='msg-form' onSubmit={(e) => e.preventDefault()}>
                         <i className="fa-solid fa-face-smile emoji"></i>
                         <input
