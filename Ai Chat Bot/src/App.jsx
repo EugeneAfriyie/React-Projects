@@ -7,6 +7,7 @@ const App = () => {
   const [isChatting,setIsChatting] = useState(false);
   const [chats,setChats] = useState([]);
   const [activeChat,setActiveChat] = useState(null);
+  const [isTyping,setIsTyping] = useState(false);
 
 
 
@@ -67,6 +68,8 @@ const App = () => {
         activeChat={activeChat}
         setActiveChat={setActiveChat}
         onNewchat={createNewChat}
+        isTyping={isTyping}
+        setIsTyping={setIsTyping}
       /> 
       :
        <ChatBotStart handleStartChat={handleStartChat}/>}

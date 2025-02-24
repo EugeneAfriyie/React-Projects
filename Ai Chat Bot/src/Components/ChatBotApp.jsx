@@ -25,7 +25,10 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat, onNewchat
             time: new Date().toLocaleTimeString(),
         };
 
+        if(activeChat === null){
+
         onNewchat(newMessage)
+        }
     
         setMessages([...messages, newMessage]);
         setInputValue('');
