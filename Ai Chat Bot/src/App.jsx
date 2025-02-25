@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ChatBotApp from './Components/ChatBotApp'
 import ChatBotStart from './Components/ChatBotStart'
 import {v4 as uuidv4} from 'uuid'

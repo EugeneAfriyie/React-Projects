@@ -109,6 +109,11 @@
     display: flex;
     flex-direction: column;
     row-gap: 4rem;
+    overflow-x: auto;
+}
+
+.chat::-webkit-scrollbar{
+    display: none;
 }
 
 .prompt, .response{
@@ -147,6 +152,7 @@
     font-size: 1.5rem;
     color: #7b8ebc;
     margin-top: auto;
+    margin-bottom: -7rem;
 }
 
 .msg-form{
