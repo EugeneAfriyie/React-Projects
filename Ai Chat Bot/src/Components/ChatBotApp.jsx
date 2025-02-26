@@ -1,8 +1,13 @@
 import React, { useEffect, useRef } from 'react'
 import { useState } from 'react';
 import './ChatBotApp.css'
-import Picker from 'emoji-mart/react';
-import data from '@emoji-mart/data'
+// import { Picker } from '@emoji-mart/react';
+import Picker from '@emoji-mart/react';
+import data from '@emoji-mart/data';
+
+
+
+
 
 const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTyping,isTyping, onNewchat, setActiveChat, activeChat }) => {
     const [inputValue, setInputValue] = useState('');
@@ -136,6 +141,9 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
                     <div className="" ref={chatEndRef}></div>
                     <form className='msg-form' onSubmit={(e) => e.preventDefault()}>
                         <i className="fa-solid fa-face-smile emoji" onClick={() => setShowEmojiPicker((prev) => !prev)}></i>
+                        {showEmojiPicker && <div className="emoji-picker">
+                            <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+                            </div>}
                         <input
                             type="text"
                             value={inputValue}
