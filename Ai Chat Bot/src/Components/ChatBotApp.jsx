@@ -168,7 +168,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
             <div className="chat-window">
                 <div className="chat-title">
                     <h3>Chat With AI</h3>
-                    <i className="bx bx-menu"></i>
+                    <i className="bx bx-menu menu"></i>
                     <i onClick={handleGoBack} className="bx bx-arrow-back arrow"></i>
                 </div>
                 <div className="chat">
