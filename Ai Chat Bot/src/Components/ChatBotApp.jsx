@@ -39,10 +39,13 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
 
         onNewchat(newMessage)
         }
+
+        const undatedMessages =  [...messages, newMessage]
     
-        setMessages([...messages, newMessage]);
+        setMessages(undatedMessages);
         setInputValue('');
         setIsTyping(true);
+        localStorage.setItem(activeChat, JSON.stringify(undatedMessages));
     
         try {
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`, {
@@ -151,6 +154,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
                             onChange={handleInputChange}
                             className="msg-input"
                             onKeyDown={handleKeyDown}
+                            onFocus={() => setShowEmojiPicker(false)}
                         />
                         <i className="fa-solid fa-paper-plane" onClick={sendMessage}></i>
                     </form>

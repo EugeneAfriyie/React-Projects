@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ChatBotApp from './Components/ChatBotApp'
 import ChatBotStart from './Components/ChatBotStart'
 import {v4 as uuidv4} from 'uuid'
@@ -9,6 +9,15 @@ const App = () => {
   const [activeChat,setActiveChat] = useState(null);
   const [isTyping,setIsTyping] = useState(false);
 
+
+  useEffect(() => { 
+    const chatsFromLocalStorage = JSON.parse(localStorage.getItem('chats')) || [];  
+    if (chatsFromLocalStorage) {
+      setChats(chatsFromLocalStorage);
+      setActiveChat(chatsFromLocalStorage[0]?.id);
+    }
+  }
+  ,[])
 
 
   const createNewChat = (initialMessage) =>{
@@ -21,6 +30,9 @@ const App = () => {
         const updatedChat = [newChat,...chats];
         setChats(updatedChat);
         setActiveChat(newChat.id)
+
+        localStorage.setItem('chats', JSON.stringify(updatedChat));
+        localStorage.setItem('newchat.id', JSON.stringify(newChat.messages));
 
 
   }
