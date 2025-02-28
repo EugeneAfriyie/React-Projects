@@ -141,7 +141,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
                     <div className="" ref={chatEndRef}></div>
                     <form className='msg-form' onSubmit={(e) => e.preventDefault()}>
                         <i className="fa-solid fa-face-smile emoji" onClick={() => setShowEmojiPicker((prev) => !prev)}></i>
-                        {showEmojiPicker && <div className="emoji-picker">
+                        {showEmojiPicker && <div className="picker">
                             <Picker data={data} onEmojiSelect={handleEmojiSelect} />
                             </div>}
                         <input
