@@ -19,6 +19,17 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
     useEffect(() => {
         const activeChatObj = chats.find(chat => chat.id === activeChat);
         setMessages(activeChatObj ? activeChatObj.messages : []);
+
+
+
+        if(activeChat){
+            const storedMessages = JSON.parse(localStorage.getItem(activeChat));
+            if (storedMessages) {
+                setMessages(storedMessages);
+            } else {
+                localStorage.setItem(activeChat, JSON.stringify([]));
+        }
+    }
         // console.log(activeChat);
     }, [activeChat, chats]);
 
@@ -35,18 +46,31 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
             time: new Date().toLocaleTimeString(),
         };
 
-        if(activeChat === null){
+        if(!activeChat){
 
         onNewchat(newMessage)
+        }else{
+            const undatedMessages =  [...messages, newMessage]
+            setMessages(undatedMessages);
+            setInputValue('');
+            localStorage.setItem(activeChat, JSON.stringify(undatedMessages));
         }
 
-        const undatedMessages =  [...messages, newMessage]
-    
-        setMessages(undatedMessages);
-        setInputValue('');
+        const updatedChat = chats.map((chat) => {
+            if (chat.id === activeChat) {
+                return {
+                    ...chat,
+                    messages: [...chat.messages, newMessage],
+                };
+            }
+            return chat;
+        });
+        setChats(updatedChat);
+        localStorage.setItem('chats', JSON.stringify(updatedChat));
         setIsTyping(true);
-        localStorage.setItem(activeChat, JSON.stringify(undatedMessages));
+
     
+        
         try {
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`, {
                 method: 'POST',
@@ -76,8 +100,22 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
                 time: new Date().toLocaleTimeString(),
             };
             isTyping(false);
+
+            undatedMessagesWithResponse = [...undatedMessages, newResponse]
     
-            setMessages((prevMessages) => [...prevMessages, newResponse]);
+            setMessages(undatedMessagesWithResponse);
+            localStorage.setItem(activeChat, JSON.stringify(undatedMessagesWithResponse));
+            const updatedChatWithResponse = chats.map((chat) => {
+                if (chat.id === activeChat) {
+                    return {
+                        ...chat,
+                        messages: undatedMessagesWithResponse,
+                    };
+                }
+                return chat;
+            });
+            setChats(updatedChatWithResponse);
+            localStorage.setItem('chats', JSON.stringify(updatedChatWithResponse));
         } catch (error) {
             console.error("Fetch error:", error);
             alert("Network error. Please check your connection.");
@@ -130,6 +168,7 @@ const ChatBotApp = ({ handleGoBack, chats, setChats, handleDeleteChat,setIsTypin
             <div className="chat-window">
                 <div className="chat-title">
                     <h3>Chat With AI</h3>
+                    <i className="bx bx-menu"></i>
                     <i onClick={handleGoBack} className="bx bx-arrow-back arrow"></i>
                 </div>
                 <div className="chat">

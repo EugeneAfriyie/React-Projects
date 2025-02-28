@@ -56,6 +56,8 @@ const App = () => {
     const handleDeleteChat = (id) => {
       const filteredChats = chats.filter((chat) => chat.id !== id);
       setChats(filteredChats);
+      localStorage.setItem('chats', JSON.stringify(filteredChats));
+      localStorage.removeItem(id);
 
       if (id === activeChat) {
         const newActiveChat = filteredChats.length > 0 ? filteredChats[0].id : null;
