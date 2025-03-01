@@ -20,3 +20,14 @@ html{
   place-items: center;
   background-color: #131927;
 }
+
+@media  (max-width:500px){
+  .container{
+    padding: 2rem;
+  }   
+
+  html{
+    font-size: 50%;
+  }
+  
+}

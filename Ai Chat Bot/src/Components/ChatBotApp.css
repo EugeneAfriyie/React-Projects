@@ -251,7 +251,22 @@
         cursor: pointer;
         display: block;
         position: absolute;
-
-
     }
+}
+
+
+@media  (max-width:500px){
+    .chat-list{
+        width: 60%;
+    }
+
+    .picker{
+        left: 1rem;
+        
+    }
+
+
+
+
+
 }
