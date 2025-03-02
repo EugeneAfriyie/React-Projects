@@ -39,7 +39,7 @@ const App = () => {
 
     const handleStartChat = () => {
       setIsChatting(true);
-      // console.log
+  
 
         // if (chats.length === 0){
         //   createNewChat();
